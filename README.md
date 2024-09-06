@@ -6,8 +6,8 @@ Welcome to the **Personal Website Portfolios** repository! This repository conta
 Below are previews of the homepage files. You can find the corresponding code in the `./websites/` folder.
 
 ### Minimalist HomePage 1
-![overview](./assets/minimalist_homepage_1_1.png)
-![sectoons](./assets/minimalist_homepage_1_2.png)
+![overview](./Assets/minimalist_homepage_1_1.png)
+![sectoons](./Assets/minimalist_homepage_1_2.png)
 
 ## License
 
