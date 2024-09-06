@@ -7,7 +7,7 @@ Below are previews of the homepage files. You can find the corresponding code in
 
 ### Minimalist HomePage 1
 ![overview](./Assets/minimalist_homepage_1_1.png)
-![sectoons](./Assets/minimalist_homepage_1_2.png)
+![sectons](./Assets/minimalist_homepage_1_2.png)
 
 ## License
 
