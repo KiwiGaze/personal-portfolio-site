@@ -1,0 +1,1796 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Software Engineer</title>
+    <script src="https://registry.npmmirror.com/vue/3.3.11/files/dist/vue.global.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'theme': {
+                            light: '#E6F0FF', // A lighter shade of #007AFF
+                            DEFAULT: '#007AFF', // Theme color
+                            dark: '#0056B3', // A darker shade of #007AFF
+                        }
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'gradient-radial-dark': 'radial-gradient(var(--tw-gradient-stops))',
+                    },
+                    screens: {
+                        'xs': '480px',
+                        '3xl': '1920px',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .back-to-top {
+            position: fixed;
+            bottom: 50px;
+            right: 20px;
+            display: none;
+            width: 50px; /* Example size */
+            height: 50px; /* Example size */
+            z-index: 100;
+        }
+        .back-to-top.visible {
+            display: block;
+        }
+        *,
+        *::after,
+        *::before {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            font-weight: 300;
+            overflow-y: scroll;
+            overflow-x: hidden; /* Prevent horizontal scrolling of the entire page */
+        }
+
+        /* Desktop Nav */
+
+        .nav-container {
+            background: rgba(0, 0, 0, 0.6);
+            -webkit-backdrop-filter: blur(10px); /* For Safari */
+            backdrop-filter: blur(10px);
+            height: 44px;
+            z-index: 300;
+            position: sticky;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .nav-container nav {
+            width: 1000px;
+            margin: 0 auto;
+            padding: 0 8px;
+            height: 100%;
+        }
+
+        nav .desktop-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            list-style: none;
+        }
+
+        nav .desktop-nav li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            opacity: 0.8;
+            transition: opacity 400ms;
+        }
+
+        nav .desktop-nav li a:hover {
+            opacity: 1;
+        }
+
+        .link-logo {
+            background: url('images/apple-logo.svg');
+            display: block;
+            background-position: center;
+            height: 44px;
+            width: 15px;
+            background-repeat: no-repeat;
+        }
+
+        .link-search {
+            background: url('images/search-icon.svg');
+            display: block;
+            background-position: center;
+            background-size: 18px;
+            height: 44px;
+            width: 20px;
+            background-repeat: no-repeat;
+        }
+
+        .link-bag {
+            background: url('images/bag-icon.svg');
+            display: block;
+            background-position: center;
+            background-size: 17px;
+            height: 44px;
+            width: 20px;
+            background-repeat: no-repeat;
+        }
+
+        .link-close {
+            background: url('images/close-icon.svg');
+            display: block;
+            background-position: center;
+            background-size: 17px;
+            height: 44px;
+            width: 20px;
+            background-repeat: no-repeat;
+        }
+
+        /* Search Container */
+
+        .search-container.hide {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .search-container {
+            width: 60%;
+            margin: 0 auto;
+            padding: 0 42px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 200;
+        }
+
+        .search-container .link-search {
+            position: absolute;
+            left: 12px;
+            opacity: 0.5;
+        }
+
+        .search-container .link-close {
+            position: absolute;
+            top: 0;
+            right: 12px;
+            opacity: 0.5;
+            cursor: pointer;
+            transition: all 400ms;
+        }
+
+        .search-container .link-close:hover {
+            opacity: 0.7;
+        }
+
+        .search-container form {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .search-container form input {
+            width: 100%;
+            height: 44px;
+            border: 0;
+            outline: none;
+            background: transparent;
+            color: #fff;
+            font-family: "Inter", sans-serif;
+            font-size: 17px;
+        }
+
+        /* Overlay */
+
+        .overlay.show {
+            position: fixed;
+            background: rgba(0, 0, 0, 0.48);
+            width: 100%;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            z-index: 100;
+        }
+
+        /* Quick Links */
+
+        .search-container .quick-links {
+            background: #fff;
+            position: absolute;
+            left: 0;
+            right: 0;
+            padding: 16px 8px;
+            border-radius: 0 0 16px 16px;
+        }
+
+        .search-container .quick-links h2 {
+            text-transform: uppercase;
+            font-size: 12px;
+            color: #6e6e73;
+            margin: 0 32px;
+            margin-top: 10px;
+        }
+
+        .search-container .quick-links ul {
+            list-style: none;
+            margin-top: 12px;
+        }
+
+        .search-container .quick-links ul li a {
+            display: inline-block;
+            width: 100%;
+            padding: 8px 50px;
+            font-size: 14px;
+            color: #1d1d1f;
+            text-decoration: none;
+            font-weight: 400;
+        }
+
+        .search-container .quick-links ul li a:hover {
+            background: #f5f5f5;
+            color: #2997ff;
+        }
+
+        /* Desktop Nav Animation */
+
+        .desktop-nav li {
+            transition: all 400ms ease;
+        }
+
+        .desktop-nav.hide li {
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+        }
+
+        /* Overlay Animation */
+
+        .overlay {
+            transition: all 400ms ease;
+        }
+
+        /* Navigation Menu Items Transition Delay */
+
+        .desktop-nav li:nth-of-type(1),
+        .desktop-nav.hide li:nth-of-type(10) {
+            transition-delay: 0ms;
+        }
+
+        .desktop-nav li:nth-of-type(2),
+        .desktop-nav.hide li:nth-of-type(9) {
+            transition-delay: 30ms;
+        }
+
+        .desktop-nav li:nth-of-type(3),
+        .desktop-nav.hide li:nth-of-type(8) {
+            transition-delay: 60ms;
+        }
+
+        .desktop-nav li:nth-of-type(4),
+        .desktop-nav.hide li:nth-of-type(7) {
+            transition-delay: 90ms;
+        }
+
+        .desktop-nav li:nth-of-type(5),
+        .desktop-nav.hide li:nth-of-type(6) {
+            transition-delay: 120ms;
+        }
+
+        .desktop-nav li:nth-of-type(6),
+        .desktop-nav.hide li:nth-of-type(5) {
+            transition-delay: 150ms;
+        }
+
+        .desktop-nav li:nth-of-type(7),
+        .desktop-nav.hide li:nth-of-type(4) {
+            transition-delay: 180ms;
+        }
+
+        .desktop-nav li:nth-of-type(8),
+        .desktop-nav.hide li:nth-of-type(3) {
+            transition-delay: 210ms;
+        }
+
+        .desktop-nav li:nth-of-type(9),
+        .desktop-nav.hide li:nth-of-type(2) {
+            transition-delay: 240ms;
+        }
+
+        .desktop-nav li:nth-of-type(10),
+        .desktop-nav.hide li:nth-of-type(1) {
+            transition-delay: 270ms;
+        }
+
+        /* Search Container Animation */
+
+        .search-container form,
+        .search-container .link-search {
+            opacity: 1;
+            transform: translateX(0);
+            transition: all 400ms ease;
+            transition-delay: 300ms;
+        }
+
+        .search-container.hide form,
+        .search-container.hide .link-search {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+
+        .search-container .link-search {
+            opacity: 0.6;
+        }
+
+        .search-container.hide .link-close {
+            opacity: 0;
+        }
+
+        .search-container .link-close {
+            opacity: 0.5;
+            transition: all 400ms ease;
+            transition-delay: 400ms;
+        }
+
+        .search-container.hide .quick-links h2 {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+
+        .search-container .quick-links h2 {
+            opacity: 1;
+            transform: translateX(0);
+            transition: all 400ms ease;
+            transition-delay: 100ms;
+        }
+
+        .search-container.hide .quick-links ul li {
+            transform: translateX(60px);
+            opacity: 0;
+        }
+
+        .search-container .quick-links ul li {
+            opacity: 1;
+            transform: translateX(0);
+            transition: all 400ms ease;
+        }
+
+        .search-container .quick-links ul li:nth-of-type(1) {
+            transition-delay: 120ms;
+        } 
+
+        .search-container .quick-links ul li:nth-of-type(2) {
+            transition-delay: 140ms;
+        } 
+
+        .search-container .quick-links ul li:nth-of-type(3) {
+            transition-delay: 160ms;
+        } 
+
+        .search-container .quick-links ul li:nth-of-type(4) {
+            transition-delay: 180ms;
+        } 
+
+        .search-container .quick-links ul li:nth-of-type(5) {
+            transition-delay: 200ms;
+        } 
+
+
+        /* Hidden Items */
+
+        .mobile-nav,
+        .mobile-search-container {
+            display: none;
+        }
+
+
+        /* Media Queries */
+
+        @media (max-width: 1100px) {
+            .nav-container nav {
+                width: 100%;
+                padding: 0 32px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container .desktop-nav {
+                flex-direction: column;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 0vh;
+                background: #000;
+                justify-content: start;
+                overflow: hidden;
+                z-index: -1;
+                transition: all 1000ms ease;
+            }
+
+            .nav-container.active .desktop-nav {
+                height: 100vh;
+            }
+
+            .nav-container .desktop-nav li {
+                width: 100%;
+                padding: 0 32px;
+            }
+
+            .nav-container .desktop-nav li:first-child {
+                margin-top: 120px;
+            }
+
+            .nav-container .desktop-nav .link-logo,
+            .nav-container .desktop-nav .link-search,
+            .nav-container .desktop-nav .link-bag {
+                display: none;
+            }
+
+            .nav-container .desktop-nav li a {
+                padding: 16px 0;
+                display: inline-block;
+                border-bottom: 1px solid #616161;
+                width: 100%;
+                font-size: 17px;
+                transform: translateY(-80px);
+                opacity: 0;
+                transition: all 700ms ease;
+            }
+
+            .nav-container.active .desktop-nav li a {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            /* Mobile Nav */
+
+            nav .mobile-nav {
+                display: flex;
+                width: 100%;
+                justify-content: space-between;
+                list-style: none;
+            }
+
+            nav .menu-icon-container {
+                width: 20px;
+                height: 44px;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+            }
+
+            nav .menu-icon {
+                position: relative;
+                width: 100%;
+            }
+
+            nav .menu-icon .line-1,
+            nav .menu-icon .line-2 {
+                position: absolute;
+                height: 1px;
+                width: 100%;
+                background: #fff;
+                transition-property: transform, top;
+                transition-delay: 0ms, 160ms;
+                transition-duration: 200ms;
+            }
+
+            nav .menu-icon .line-1 {
+                top: -4px;
+            }
+
+            nav .menu-icon .line-2 {
+                top: 4px;
+            }
+
+            .nav-container.active nav .menu-icon-container .menu-icon .line-1 {
+                top: 0;
+                transform: rotateZ(45deg);
+                transition-property: top, transform;
+                transition-delay: 0ms, 160ms;
+                transition-duration: 200ms;
+            }
+
+            .nav-container.active nav .menu-icon-container .menu-icon .line-2 {
+                top: 0;
+                transform: rotateZ(-45deg);
+                transition-property: top, transform;
+                transition-delay: 0ms, 160ms;
+                transition-duration: 200ms;
+            }
+
+            /* Bag Icon Animation */
+
+            .nav-container.active .mobile-nav .link-bag {
+                transform: translateY(8px);
+                opacity: 0;
+                pointer-events: none;
+            }
+
+            .nav-container .mobile-nav .link-bag {
+                transition: all 1000ms ease;
+            }
+
+
+
+            /* Search Box */
+
+            .mobile-search-container input {
+                width: 100%;
+                padding: 12px 36px;
+                font-family: "Inter", sans-serif;
+                font-size: 17px;
+                background: #1b1b1b;
+                border: 0;
+                color: #fff;
+                border-radius: 8px;
+                outline: none;
+            }
+
+            .mobile-search-container {
+                position: relative;
+                padding: 0 16px;
+                margin-top: -30px;
+                border-bottom: 1px solid #616161;
+                display: flex;
+                padding-bottom: 16px;
+                align-items: center;
+                transform: rotateX(90deg);
+                opacity: 0;
+                transition: all 600ms ease;
+            }
+
+            .nav-container.active .mobile-search-container {
+                transform: rotateX(0deg);
+                margin-top: 10px;
+                opacity: 1;
+            }
+
+            .mobile-search-container .link-search {
+                position: absolute;
+                left: 24px;
+                opacity: .5;
+                background-size: 15px;
+            }
+
+            /* Nav Move Up */
+
+            .nav-container nav.move-up {
+                margin-top: -40px;
+            }
+
+            /* Cancel Button */
+
+            .mobile-search-container .cancel-btn {
+                color: #2997ff;
+                font-size: 17px;
+                font-weight: 400;
+                cursor: pointer;
+                width: 0px;
+                overflow: hidden;
+                transition: all 400ms ease;
+            }
+
+            .mobile-search-container .search-bar.active + .cancel-btn {
+                padding: 0 16px;
+                width: 74px;
+            }
+
+            .mobile-search-container .search-bar {
+                flex: 1;
+            }
+
+            /* Desktop Nav Move Down */
+
+            nav .desktop-nav.move-down li:first-child {
+                margin-top: 150px;
+            }
+
+            nav .desktop-nav.move-down li {
+                opacity: 0;
+                pointer-events: none;
+            }
+
+            
+            /* Quick Links */
+
+            .mobile-search-container .search-bar.active ~ .quick-links {
+                top: 80px;
+                opacity: 1;
+                pointer-events: auto;
+                transition-delay: 40ms;
+            }
+
+            .mobile-search-container .quick-links {
+                position: absolute;
+                left: 0;
+                right: 0;
+                padding: 0 32px;
+                opacity: 0;
+                pointer-events: none;
+                top: 10px;
+                transition: all 400ms ease;
+            }
+
+            .mobile-search-container .quick-links ul {
+                list-style: none;
+            }
+
+            .mobile-search-container .quick-links h2 {
+                color: #86868b;
+                font-size: 12px;
+                text-transform: uppercase;
+                font-weight: 400;
+            }
+
+            .mobile-search-container .quick-links ul li a {
+                padding: 16px 0;
+                display: inline-block;
+                text-decoration: none;
+                color: #fff;
+                font-size: 14px;
+                font-weight: 400;
+                border-bottom: 1px solid #616161;
+                width: 100%;
+            }
+
+            .mobile-search-container .quick-links ul li a:hover {
+                color: #2997ff;
+            }
+
+            /* Nav Animation */
+
+            .nav-container nav {
+                transition: all 400ms ease;
+            }
+        }
+
+
+        input,
+        div,
+        span,
+        a {
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+        .radiant-text {
+            animation: glow 1.5s infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                text-shadow: 0 0 5px rgba(0, 0, 0, 0.3), 0 0 10px rgba(58, 150, 221, 0.5), 0 0 15px rgba(255, 56, 153, 0.5);
+            }
+            50% {
+                text-shadow: 0 0 10px rgba(0, 0, 0, 0.4), 0 0 20px rgba(58, 150, 221, 0.7), 0 0 25px rgba(255, 56, 153, 0.7);
+            }
+        }
+
+        .animation-section {
+            height: 200vh;
+            position: relative;
+            overflow: hidden;
+        }
+        .image-container {
+            position: sticky;
+            top: 50px;
+            width: 100%;
+            height: calc(100vh - 100px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+        }
+        .animation-content {
+            position: relative;
+            z-index: 2;
+            background-color: #f0f0f0;
+            padding: 20px;
+            text-align: center;
+        }
+        #animated-image {
+            width: 100%;
+            height: 100%; /* Maintain aspect ratio for larger screens */
+            object-fit: cover;
+            transition: all 0.3s ease-in-out;
+        }
+        .scroll-container {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .scroll-container::-webkit-scrollbar {
+            display: none;
+        }
+        .overflow-container {
+            width: 100%;
+            overflow-x: hidden;
+            padding: 0 20px; /* Align with other content */
+        }
+
+        .scroll-container {
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none;  /* Internet Explorer 10+ */
+        }
+
+        .scroll-container::-webkit-scrollbar {
+            display: none; /* WebKit */
+        }
+
+        .scroll-container > div {
+            scroll-snap-align: center;
+        }
+    </style>
+    <style scoped>
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .overflow-hidden::-webkit-scrollbar {
+          display: none;
+        }
+        
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .overflow-hidden {
+          -ms-overflow-style: none;  /* IE and Edge */
+          scrollbar-width: none;  /* Firefox */
+        }
+        /* Webkit browsers like Chrome/Safari */
+        .overflow-y-auto::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .overflow-y-auto::-webkit-scrollbar-track {
+            background: #EDE9FE;
+        }
+
+        .overflow-y-auto::-webkit-scrollbar-thumb {
+            background-color: #8B5CF6;
+            border-radius: 20px;
+            border: 3px solid #EDE9FE;
+        }
+
+        /* For Firefox */
+        .overflow-y-auto {
+            scrollbar-width: thin;
+            scrollbar-color: #8B5CF6 #EDE9FE;
+        }
+        .project-card {
+            transition: opacity 0.5s ease-out, transform 0.3s ease-out;
+        }
+        .project-card:not(.opacity-0) {
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .scrollbar-thin::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar-track {
+            background: #E5E7EB;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+            background-color: #8B5CF6;
+            border-radius: 20px;
+            border: 2px solid #E5E7EB;
+        }
+
+        .dark .scrollbar-thin::-webkit-scrollbar-track {
+            background: #374151;
+        }
+
+        .dark .scrollbar-thin::-webkit-scrollbar-thumb {
+            background-color: #A78BFA;
+            border: 2px solid #374151;
+        }
+
+        .animate-fade-in-up {
+        animation: fadeInUp 0.6s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen font-sans text-gray-800 antialiased
+             bg-gradient-to-br from-blue-50 via-white to-blue-50
+             dark:bg-gradient-to-r dark:from-gray-700 dark:via-gray-800 dark:to-gray-700
+             transition-colors duration-300">
+    <div id="app" class="min-h-screen flex flex-col">
+        <div class="nav-container">
+            <nav>
+                <ul class="mobile-nav">
+                    <li>
+                        <div class="menu-icon-container">
+                            <div class="menu-icon">
+                                <span class="line-1"></span>
+                                <span class="line-2"></span>
+                            </div>
+                        </div>
+                    </li>
+    
+                    <li>
+                        <a href="#" class="link-logo"></a>
+                    </li>
+    
+                    <li>
+                        <a href="" class="link-bag"></a>
+                    </li>
+                </ul>
+    
+                <ul class="desktop-nav">
+                    <li>
+                        <a href="#" class="link-logo"></a>
+                    </li>
+                    <li>
+                        <a href="#about" class="p-2 hover:text-white transition-all duration-100">
+                            {{ currentLanguage === 'en' ? 'About' : '关于' }}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#skills" class="p-2 hover:text-white transition-all duration-100">
+                            {{ currentLanguage === 'en' ? 'Skills' : '技能' }}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#projects" class="p-2 hover:text-white transition-all duration-100">
+                            {{ currentLanguage === 'en' ? 'Projects' : '项目' }}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#experience" class="p-2 hover:text-white transition-all duration-100">
+                            {{ currentLanguage === 'en' ? 'Experience' : '经历' }}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#testimonials" class="p-2 hover:text-white transition-all duration-100">
+                            {{ currentLanguage === 'en' ? 'Testimonials' : '推荐语' }}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#contact" class="p-2 hover:text-white transition-all duration-100">
+                            {{ currentLanguage === 'en' ? 'Contact' : '联系' }}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="link-search"></a>
+                    </li>
+                    <li>
+                        <a href="#" class="link-bag"></a>
+                    </li>
+                </ul>
+            </nav>
+    
+            <!-- End of navigation menu items -->
+    
+            <div class="search-container hide">
+                <div class="link-search"></div>
+                <div class="search-bar">
+                    <form action="">
+                        <input type="text" placeholder="Search">
+                    </form>
+                </div>
+                <div class="link-close"></div>
+    
+                <div class="quick-links">
+                    <h2>Quick Links</h2>
+                    <ul>
+                        <li>
+                            <a href="#">Not Implemented/a>
+                        </li>
+                        <li>
+                            <a href="#">Not Implemented</a>
+                        </li>
+                        <li>
+                            <a href="#">Not Implemented</a>
+                        </li>
+                        <li>
+                            <a href="#">Not Implemented</a>
+                        </li>
+                        <li>
+                            <a href="#">Not Implemented</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mobile-search-container">
+                <div class="link-search"></div>
+                <div class="search-bar">
+                    <form action="">
+                        <input type="text" placeholder="Search">
+                    </form>
+                </div>
+                <span class="cancel-btn">Cancel</span>
+    
+                <div class="quick-links">
+                    <h2>Quick Links</h2>
+                    <ul>
+                        <li>
+                            <a href="#">Not Implemented</a>
+                        </li>
+                        <li>
+                            <a href="#">Not Implemented</a>
+                        </li>
+                        <li>
+                            <a href="#">Not Implemented</a>
+                        </li>
+                        <li>
+                            <a href="#">Not Implemented</a>
+                        </li>
+                        <li>
+                            <a href="#">Not Implemented</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="overlay"></div>
+        <main>
+            <div class="py-4 px-6 flex justify-between items-center relative z-10">
+                <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+                    <div class="text-3xl font-bold text-gra-700 dark:text-gray-300">
+                        {{ currentLanguage === 'en' ? 'My Portfolio' : '个人主页' }}
+                    </div>
+                    <div class="flex flex-row items-center space-x-2">
+                        <!-- Language Switcher Button -->
+                        <button @click="toggleLanguage" class="relative flex items-center justify-center focus:outline-none text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 px-3 py-2 rounded-lg transition-all duration-300 group">
+                            <i class="fas fa-globe text-xl"></i>
+                            <span class="ml-2">{{ currentLanguage === 'en' ? '中文' : 'English' }}</span>
+                            <!-- Tooltip (beneath the button) -->
+                            <span class="tooltip absolute left-0 top-full mt-2 text-sm bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                {{ currentLanguage === 'en' ? 'Switch to Chinese' : 'Switch to English' }}
+                            </span>
+                        </button>
+                
+                        <!-- Dark Mode Toggle Button -->
+                        <button @click="toggleDarkMode" class="relative flex items-center justify-center focus:outline-none hover:bg-gray-200 dark:hover:bg-gray-600 px-3 py-2 rounded-lg transition-all duration-300 group">
+                            <i :class="isDarkMode ? 'fas fa-sun text-yellow-500 text-xl' : 'fas fa-moon text-gray-700 dark:text-gray-300 text-xl'"></i>
+                            <!-- Tooltip (beneath the button) -->
+                            <span class="tooltip absolute left-0 top-full mt-2 text-sm bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                {{ isDarkMode ? 'Light Mode' : 'Dark Mode' }}
+                            </span>
+                        </button>
+                    </div>              
+                    
+                </div>
+            </div>
+            <!--Home section-->
+            <section id="home" class="py-20 relative">
+                <!-- Video Background -->
+                <video autoplay muted loop class="absolute top-0 left-0 w-full h-full object-cover">
+                    <source src="path/to/your/video.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="flex flex-col items-center mx-auto px-6 text-center relative z-10">
+                    <!-- Profile Picture -->
+                    <img src="./images/github_selfie.jpeg" alt="Professional headshot of the software engineer" class="mx-auto rounded-full mb-4 w-32 h-32 object-cover shadow-lg hover:scale-105 transition duration-300" />
+
+                    <!-- Inverted Triangle Shaped Text with Gradient -->
+                    <h1 class="text-5xl font-bold mb-2 text-gray-600 dark:text-white">
+                        Kiwi
+                    </h1>
+                    <p class="text-3xl mb-4 bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text animate-pulse">
+                        {{ currentLanguage === 'en' ? 'Software Engineer | Full Stack Developer' : '软件工程师 | 全栈开发者' }}
+                    </p>
+                    <!-- Text with Radiant Effect -->
+                    <p class="text-xl text-gray-700 dark:text-gray-300 mb-6 max-w-md mx-auto leading-relaxed animate-pulse radiant-text">
+                        {{ currentLanguage === 'en' ? 'Creating innovative solutions with modern technologies.' : '利用现代技术创造创新解决方案。' }}
+                    </p>
+                    <!-- Call to Action Buttons -->
+                    <div class="flex flex-row items-center justify-center mb-8">
+                        <!-- Updated Contact Me Button -->
+                        <a href="#contact" class="relative inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-3 rounded-full hover:shadow-xl hover:border-blue-400 dark:hover:border-pink-500 transition-all duration-300 transform hover:-translate-y-1 focus:ring-4 focus:ring-blue-300 dark:focus:ring-pink-300 font-medium text-lg">
+                            {{ currentLanguage === 'en' ? 'Contact Me' : '联系我' }}
+                        </a>                        
+                        
+                        <!-- Download Resume Button (unchanged) -->
+                        <a href="resume.pdf" class="ml-4 text-black dark:text-gray-300 hover:text-gray-500 dark:hover:text-white hover:underline inline-flex items-center transition-all duration-300 group">
+                            <span class="mr-2">{{ currentLanguage === 'en' ? 'Download Resume' : '下载简历' }}</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 19l14-14m0 0v11m0-11h-11" />
+                            </svg>
+                        </a>
+                    </div>
+
+                    <!-- Social Media Icons -->
+                    <div class="flex justify-center space-x-5">
+                        <a href="#" class="text-gray-600 hover:text-[#333] dark:text-gray-400 dark:hover:text-[#333] transition-all duration-300 transform hover:scale-110">
+                            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" fill="#333"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-[#0A66C2] dark:text-gray-400 dark:hover:text-[#0A66C2] transition-all duration-300 transform hover:scale-110">
+                            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" fill="#0A66C2"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-[#1DA1F2] dark:text-gray-400 dark:hover:text-[#1DA1F2] transition-all duration-300 transform hover:scale-110">
+                            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" fill="#1DA1F2"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-[#E4405F] dark:text-gray-400 dark:hover:text-[#E4405F] transition-all duration-300 transform hover:scale-110">
+                            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z" fill="#E4405F"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Animated Image Section -->
+            <section id="animation" class="relative h-screen overflow-hidden" ref="animationSection">
+                <div class="sticky top-0 w-full h-screen flex flex-col justify-between items-center z-10 overflow-hidden">
+                    <!-- Image -->
+                    <img id="animated-image" src="./background/aaron-sebastian-bfgEYpS0Znk-unsplash.jpg" alt="Animated image"
+                        :style="{ transform: `scale(${imageScale})`, borderRadius: `${borderRadius}px` }"
+                        class="absolute w-full h-full object-cover transition-all duration-300 ease-in-out">
+                    
+                    <!-- Enhanced Text Overlay -->
+                    <div class="relative w-full flex flex-col items-center justify-between h-full text-white transition-all duration-300 py-32 px-8">
+                        <!-- Top content -->
+                        <div class="text-center">
+                            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mt-12 mb-4 px-4">
+                                <span class="text-gray-700">
+                                    {{ currentLanguage === 'en' ? 'Welcome to My Portfolio' : '欢迎来到我的作品集' }}
+                                </span>
+                            </h1>
+                            <p class="text-xl sm:text-2xl text-gray-600 max-w-2xl px-4">
+                                {{ currentLanguage === 'en' ? 'Explore my journey through code, creativity, and innovation' : '探索我的代码之旅，创意与创新' }}
+                            </p>
+                        </div>
+
+                        <!-- Bottom content -->
+                        <a href="#about"
+                        class="group flex flex-col items-center space-y-3 px-6 py-4 text-blue-500 rounded-full transition-all duration-300 ease-in-out"
+                        >
+                            <span class="font-semibold text-xl sm:text-xl transform group-hover:translate-y-1 transition-all duration-300">
+                                {{ currentLanguage === 'en' ? 'Start Discover' : '开始探索' }}
+                            </span>
+                            <div class="p-3 rounded-full border-2 border-blue-500 transition-all duration-300 ease-in-out">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    class="w-6 h-6 sm:w-8 sm:h-8 transform group-hover:translate-y-1 transition-all duration-300"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M19 9l-7 7-7-7"
+                                    />
+                                </svg>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- About Section -->
+            <section id="about" class="py-20">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-4xl mx-auto">
+            
+                    <!-- Section Title -->
+                    <h2 class="text-4xl sm:text-5xl font-extrabold text-center mb-12 text-gray-700 dark:text-gray-300">
+                    {{ currentLanguage === 'en' ? 'About Me' : '关于我' }}
+                    </h2>
+            
+                    <!-- Main Content -->
+                    <div class="space-y-12">
+            
+                    <!-- Professional Summary -->
+                    <div class="text-center">
+                        <p class="text-xl text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+                        {{ currentLanguage === 'en' ? 
+                            'As a passionate software engineer with a robust background in computer science, I specialize in full-stack development, creating innovative solutions that bridge the gap between complex problems and elegant, user-centric applications.' : 
+                            '作为一名热衷于计算机科学的软件工程师，我专注于全栈开发，创造创新解决方案，架起复杂问题与优雅、以用户为中心的应用程序之间的桥梁。'
+                        }}
+                        </p>
+                        <p class="text-lg text-gray-600 dark:text-gray-400">
+                        {{ currentLanguage === 'en' ? 
+                            'My approach combines technical expertise with a keen eye for user experience, ensuring that every project I undertake not only functions flawlessly but also delights its users.' : 
+                            '我的方法将技术专长与敏锐的用户体验洞察力相结合，确保我承担的每个项目不仅功能完善，而且能让用户感到愉悦。'
+                        }}
+                        </p>
+                    </div>
+            
+                    <!-- Key Achievements and Experience -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+                        <!-- Achievements -->
+                        <div class="bg-gray-100 dark:bg-gray-800 rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:shadow-gray-500/50 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105">
+                        <h3 class="text-2xl font-bold mb-4 text-gray-700 dark:text-gray-300">
+                            {{ currentLanguage === 'en' ? 'Key Achievements' : '主要成就' }}
+                        </h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start group">
+                            <svg class="w-6 h-6 text-blue-500 dark:text-blue-300 mr-2 flex-shrink-0 transition-all duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <span class="text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">{{ currentLanguage === 'en' ? 'AWS Certified Solutions Architect' : 'AWS认证解决方案架构师' }}</span>
+                            </li>
+                            <li class="flex items-start group">
+                            <svg class="w-6 h-6 text-blue-500 dark:text-blue-300 mr-2 flex-shrink-0 transition-all duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <span class="text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">{{ currentLanguage === 'en' ? 'Winner of ABC Hackathon 2022' : 'ABC Hackathon 2022 获奖者' }}</span>
+                            </li>
+                            <li class="flex items-start group">
+                            <svg class="w-6 h-6 text-blue-500 dark:text-blue-300 mr-2 flex-shrink-0 transition-all duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            <span class="text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">{{ currentLanguage === 'en' ? 'Led development of XYZ project, increasing efficiency by 40%' : '领导开发XYZ项目，提高效率40%' }}</span>
+                            </li>
+                        </ul>
+                        </div>
+            
+                        <!-- Experience Highlights -->
+                        <div class="bg-gray-100 dark:bg-gray-800 rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:shadow-gray-500/50 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105">
+                        <h3 class="text-2xl font-bold mb-4 text-gray-700 dark:text-gray-300">
+                            {{ currentLanguage === 'en' ? 'Experience Highlights' : '经验亮点' }}
+                        </h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start group">
+                            <svg class="w-6 h-6 text-blue-500 dark:text-blue-300 mr-2 flex-shrink-0 transition-all duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                            <span class="text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">{{ currentLanguage === 'en' ? 'Developed scalable microservices architecture' : '开发可扩展的微服务架构' }}</span>
+                            </li>
+                            <li class="flex items-start group">
+                            <svg class="w-6 h-6 text-blue-500 dark:text-blue-300 mr-2 flex-shrink-0 transition-all duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            <span class="text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">{{ currentLanguage === 'en' ? 'Implemented CI/CD pipelines for rapid deployment' : '实施CI/CD管道以实现快速部署' }}</span>
+                            </li>
+                            <li class="flex items-start group">
+                            <svg class="w-6 h-6 text-blue-500 dark:text-blue-300 mr-2 flex-shrink-0 transition-all duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                            <span class="text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">{{ currentLanguage === 'en' ? 'Optimized database performance, reducing query times by 60%' : '优化数据库性能，查询时间减少60%' }}</span>
+                            </li>
+                        </ul>
+                        </div>
+                    </div>
+            
+                    <!-- Education -->
+                    <div class="bg-gray-100 dark:bg-gray-800 rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:shadow-gray-500/50 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105">
+                        <h3 class="text-2xl font-bold mb-4 text-gray-700 dark:text-gray-300">
+                        {{ currentLanguage === 'en' ? 'Education' : '教育背景' }}
+                        </h3>
+                        <div class="flex items-center justify-between flex-wrap">
+                        <div>
+                            <p class="text-xl font-medium text-gray-700 dark:text-gray-300">
+                            {{ currentLanguage === 'en' ? 'B.Sc. in Computer Science' : '计算机科学学士学位' }}
+                            </p>
+                            <p class="text-lg text-gray-600 dark:text-gray-400">
+                            {{ currentLanguage === 'en' ? 'XYZ University' : 'XYZ大学' }}
+                            </p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-lg font-medium text-gray-600 dark:text-gray-400">
+                            {{ currentLanguage === 'en' ? 'Class of 2020' : '2020届' }}
+                            </p>
+                            <p class="text-gray-600 dark:text-gray-400">
+                            {{ currentLanguage === 'en' ? 'Magna Cum Laude' : '优等毕业' }}
+                            </p>
+                        </div>
+                        </div>
+                    </div>
+            
+                    </div>
+            
+                    <!-- Call to Action -->
+                    <div class="mt-12 text-center">
+                    <a href="#contact" class="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        {{ currentLanguage === 'en' ? 'Let\'s Collaborate' : '让我们合作' }}
+                    </a>
+                    </div>
+                </div>
+                </div>
+            </section>
+  
+            <!-- Skills Section -->
+            <section id="skills" class="py-20 overflow-hidden">
+                <h2 class="text-4xl sm:text-5xl font-extrabold text-center mb-12 px-4">
+                <span class="text-gray-700 dark:text-gray-300 ">
+                    {{ currentLanguage === 'en' ? 'Skills' : '技能' }}
+                </span>
+                </h2>
+                <div 
+                ref="carouselRef"
+                @mouseenter="pauseScroll"
+                @mouseleave="resumeScroll"
+                class="relative w-full overflow-hidden"
+                >
+                <div 
+                    class="flex transition-transform duration-1000 ease-linear"
+                    :style="{ transform: `translateX(${-scrollPosition}px)` }"
+                >
+                    <div 
+                    v-for="(skill, index) in duplicatedSkills" 
+                    :key="`${skill.name}-${index}`"
+                    class="flex-shrink-0 pb-10 w-48 mx-3"
+                    >
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 text-center relative overflow-hidden group my-4 border border-gray-200 dark:border-gray-700">
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                        <div class="relative z-10">
+                        <div class="mb-4 bg-gray-100 dark:bg-gray-700 rounded-full p-4 inline-block">
+                            <i :class="[skill.icon, 'text-5xl', skill.color]"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">{{ skill.name }}</h3>
+                        <div class="w-16 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </section>
+            <!-- Projects Section -->
+            <section id="projects" class="py-20 ">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-4xl sm:text-5xl font-extrabold text-center mb-12">
+                        <span class="text-gray-700 dark:text-gray-300">
+                            {{ currentLanguage === 'en' ? 'Featured Projects' : '精选项目' }}
+                        </span>
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div v-for="(project, index) in projects" :key="project.id" 
+                            class="group relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 transform hover:-translate-y-2"
+                            :class="{'opacity-0': !project.visible}" 
+                            :ref="el => { if (el) projectRefs[index] = el }">
+                            <div class="relative h-64 md:h-80">
+                                <img :src="project.image" :alt="project.title[currentLanguage]" 
+                                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            </div>
+                            <div class="absolute inset-0 flex flex-col justify-end p-6 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                                <h3 class="text-2xl font-bold mb-2">{{ project.title[currentLanguage] }}</h3>
+                                <p class="text-sm mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
+                                    {{ project.description[currentLanguage] }}
+                                </p>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span v-for="tech in project.technologies" :key="tech" 
+                                        class="px-2 py-1 bg-white/20 rounded-full text-xs font-medium backdrop-blur-sm">
+                                        {{ tech }}
+                                    </span>
+                                </div>
+                                <div class="flex space-x-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200">
+                                    <a v-if="project.demoLink" :href="project.demoLink" target="_blank" rel="noopener noreferrer" 
+                                    class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-600 hover:bg-blue-700 transition-colors duration-300">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                    </a>
+                                    <a v-if="project.codeLink" :href="project.codeLink" target="_blank" rel="noopener noreferrer" 
+                                    class="flex items-center justify-center w-12 h-12 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors duration-300">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-12 text-center">
+                        <a href="#" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 transform hover:-translate-y-1">
+                            <span class="mr-2">{{ currentLanguage === 'en' ? 'View All Projects' : '查看所有项目' }}</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </section>
+            <!--scroll image-->
+            <section id="experience" class="py-20 relative">
+                <div class="relative inset-0 overflow-hidden">
+                    <h2 class="text-4xl sm:text-5xl font-extrabold text-center mb-8">
+                        <span class="text-gray-700 dark:text-gray-300">
+                          {{ currentLanguage === 'en' ? 'Professional Journey' : '职业历程' }}
+                        </span>
+                    </h2>
+                    <div class="flex justify-center">
+                        <button class="group flex items-center space-x-4 px-4 py-2 text-blue-500 rounded-full transition-all duration-300 ease-in-out">
+                            <div class="p-2 rounded-full border border-blue-500 transition-all duration-300 ease-in-out">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 transform group-hover:translate-x-1 transition-all duration-300">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </div>
+                            <span class="font-semibold text-blue-500 transform hover:translate-x-1 transition-all duration-300">
+                                {{ currentLanguage === 'en' ? 'All Experiences' : '全部经历' }}
+                            </span>
+                        </button>
+                    </div>
+                    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+                        <div class="flex justify-center mt-4">
+                            <div class="flex flex-row space-x-8">
+                                <button @click="scroll('left')" class="text-black p-2 focus:outline-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                    </svg>
+                                </button>
+                                <button @click="scroll('right')" class="text-black p-2 focus:outline-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="scroll-container flex overflow-x-auto py-4 w-screen" ref="scrollContainer">
+                        <div class="flex-shrink-0 w-[5vw]"></div> <!-- Spacer for left overflow -->
+                        <div v-for="(project, index) in projects" :key="index" class="flex-shrink-0 w-[80vw] sm:w-[48vw] md:w-[42vw] lg:w-[36vw] xl:w-[30vw] 2xl:w-[25vw] 3xl:w-[15vw] px-2">
+                          <div class="relative bg-white rounded-3xl overflow-hidden h-[600px] lg:h-[675px] shadow-lg group">
+                            <div class="absolute inset-0 overflow-hidden">
+                              <img 
+                                :src="project.image" 
+                                :alt="project.title[currentLanguage]" 
+                                class="w-full h-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
+                              >
+                              <div class="absolute inset-0 bg-black opacity-30 transition-opacity duration-300 ease-in-out group-hover:opacity-50"></div>
+                            </div>
+                            <div class="relative h-full flex flex-col justify-end p-6 text-white z-10">
+                              <h3 class="text-2xl font-bold mb-2">{{ project.title[currentLanguage] }}</h3>
+                              <p class="mb-4 overflow-y-auto max-h-[150px]">{{ project.description[currentLanguage] }}</p>
+                              <div class="flex flex-wrap gap-2 mt-auto">
+                                <span 
+                                  v-for="tech in project.technologies" 
+                                  :key="tech" 
+                                  class="px-3 py-1 bg-white/20 rounded-full text-sm font-medium backdrop-blur-sm"
+                                >
+                                  {{ tech }}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="flex-shrink-0 w-[5vw]"></div> <!-- Spacer for right overflow -->
+                    </div>
+                </div>
+            </section>
+            <!--Testimonials-->
+            <section id="testimonials" class="py-24">
+                <div class="container mx-auto px-6">
+                  <h2 class="text-5xl font-extrabold mb-16 text-center animate-fade-in-up">
+                    <span class="text-gray-700 dark:text-gray-300">
+                      {{ currentLanguage === 'en' ? 'Testimonials' : '推荐语' }}
+                    </span>
+                  </h2>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div v-for="(testimonial, index) in testimonials" :key="index"
+                         class="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-2 animate-fade-in-up">
+                      <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-gray-300 flex items-center justify-center mr-4">
+                          <span class="text-2xl font-bold text-white">{{ testimonial.name[currentLanguage][0] }}</span>
+                        </div>
+                        <div>
+                          <p class="font-semibold text-xl text-gray-900 dark:text-gray-100">
+                            {{ testimonial.name[currentLanguage] }}
+                          </p>
+                          <p class="text-gray-600 dark:text-gray-400">
+                            {{ testimonial.position[currentLanguage] }}
+                          </p>
+                        </div>
+                      </div>
+                      <p class="text-gray-700 dark:text-gray-300 text-lg italic mb-4 leading-relaxed">
+                        "{{ testimonial.content[currentLanguage] }}"
+                      </p>
+                      <div class="flex text-yellow-400">
+                        <svg v-for="star in 5" :key="star" class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </section>
+            <!--Contact Section-->
+            <section id="contact" class="container mx-auto px-6 py-20">
+                <h2 class="text-5xl font-extrabold mb-16 text-center animate-fade-in-up">
+                    <span class="text-gray-700 dark;text-gray-300">
+                    {{ currentLanguage === 'en' ? 'Get in Touch' : '联系我' }}
+                    </span>
+                </h2>
+                <div class="max-w-3xl mx-auto bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300">
+                    <form action="#" method="POST">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label for="name" class="block text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                                    {{ currentLanguage === 'en' ? 'Name' : '名字' }}
+                                </label>
+                                <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-purple-500 transition" required>
+                            </div>
+                            <div>
+                                <label for="email" class="block text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                                    {{ currentLanguage === 'en' ? 'Email' : '电子邮件' }}
+                                </label>
+                                <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-purple-500 transition" required>
+                            </div>
+                        </div>
+                        <div class="mb-6">
+                            <label for="message" class="block text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                                {{ currentLanguage === 'en' ? 'Message' : '留言' }}
+                            </label>
+                            <textarea id="message" name="message" rows="5" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-purple-500 transition" required></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="px-8 py-3 rounded-full bg-gradient-to-br from-blue-600 to-purple-500 text-white font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
+                                {{ currentLanguage === 'en' ? 'Send Message' : '发送留言' }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+            
+        </main>
+
+        <footer class="bg-white dark:bg-gray-800 py-10">
+            <div class="container mx-auto px-6 text-center space-y-4">
+                <p class="text-gray-600 dark:text-gray-400 text-sm">
+                    &copy; 2024 Qi Yijiazhen. {{ currentLanguage === 'en' ? 'All rights reserved.' : '保留所有权利。' }}
+                </p>
+                <div class="flex justify-center space-x-4">
+                    <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition">
+                        <i class="fab fa-github text-2xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition">
+                        <i class="fab fa-linkedin text-2xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition">
+                        <i class="fab fa-twitter text-2xl"></i>
+                    </a>
+                </div>
+            </div>
+        </footer>
+        
+        <button @click="scrollToTop" class="back-to-top bg-black hover:bg-gray-500 text-white p-2 rounded-full transition" :class="{'visible': showBackToTop}">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        const app = Vue.createApp({
+            data() {
+                return {
+                    isMenuOpen: false,
+                    isDarkMode: window.matchMedia('(prefers-color-scheme: dark)').matches,
+                    currentLanguage: 'en',
+                    showBackToTop: false,
+                    isSearchActive: false,
+                    skills: [
+                        { name: 'JavaScript', icon: 'fab fa-js-square', color: 'text-yellow-500' },
+                        { name: 'React', icon: 'fab fa-react', color: 'text-blue-500' },
+                        { name: 'Node.js', icon: 'fab fa-node-js', color: 'text-green-500' },
+                        { name: 'Python', icon: 'fab fa-python', color: 'text-blue-500' },
+                        { name: 'AWS', icon: 'fab fa-aws', color: 'text-orange-500' },
+                        { name: 'Docker', icon: 'fab fa-docker', color: 'text-blue-500' },
+                        { name: 'Git', icon: 'fab fa-git-alt', color: 'text-red-500' },
+                        { name: 'Sass', icon: 'fab fa-sass', color: 'text-pink-500' },
+                        // Add more skills as needed
+                    ],
+                    scrollPosition: 0,
+                    scrollInterval: null,
+                    jobs: [
+                        {
+                        company: { en: 'Future Tech Innovations', zh: '未来科技创新' },
+                        role: { en: 'Senior Software Architect', zh: '高级软件架构师' },
+                        duration: '2020 - Present',
+                        responsibilities: {
+                            en: [
+                            'Spearheaded the design and implementation of a cloud-native microservices architecture',
+                            'Led a team of 15 developers in delivering high-impact projects for Fortune 500 clients',
+                            'Pioneered the adoption of AI and machine learning technologies in core products'
+                            ],
+                            zh: [
+                            '带头设计和实施云原生微服务架构',
+                            '领导15人的开发团队为财富500强客户交付高影响力项目',
+                            '在核心产品中率先采用人工智能和机器学习技术'
+                            ]
+                        }
+                        },
+                        {
+                        company: { en: 'Global Systems Corp', zh: '全球系统公司' },
+                        role: { en: 'Full Stack Developer', zh: '全栈开发工程师' },
+                        duration: '2017 - 2020',
+                        responsibilities: {
+                            en: [
+                            'Developed and maintained multiple mission-critical web applications',
+                            'Implemented responsive designs and improved overall UX, increasing user engagement by 40%',
+                            'Optimized database queries and application performance, reducing load times by 60%'
+                            ],
+                            zh: [
+                            '开发和维护多个关键任务的Web应用程序',
+                            '实施响应式设计并改善整体用户体验，使用户参与度提高40%',
+                            '优化数据库查询和应用程序性能，将加载时间减少60%'
+                            ]
+                        }
+                        }
+                    ],
+                    projects: [
+                        {
+                        id: 1,
+                        title: { 
+                            en: 'AI-Powered Analytics Dashboard',
+                            zh: 'AI驱动的分析仪表板'
+                        },
+                        description: {
+                            en: 'Developed a real-time analytics dashboard using machine learning algorithms to predict market trends and provide actionable insights.',
+                            zh: '开发了一个使用机器学习算法预测市场趋势并提供可操作洞察的实时分析仪表板。'
+                        },
+                        image: './background/yue-ma-7IO4-fLM574-unsplash.jpg',
+                        technologies: ['React', 'TensorFlow.js', 'Node.js', 'MongoDB'],
+                        demoLink: 'https://demo.example.com',
+                        codeLink: 'https://github.com/yourusername/project-repo',
+                        visible: false
+                        },
+                        {
+                        id: 2,
+                        title: { 
+                            en: 'AI-Powered Analytics Dashboard',
+                            zh: 'AI驱动的分析仪表板'
+                        },
+                        description: {
+                            en: 'Developed a real-time analytics dashboard using machine learning algorithms to predict market trends and provide actionable insights.',
+                            zh: '开发了一个使用机器学习算法预测市场趋势并提供可操作洞察的实时分析仪表板。'
+                        },
+                        image: './background/yue-ma--th4TTnX0y0-unsplash.jpg',
+                        technologies: ['React', 'TensorFlow.js', 'Node.js', 'MongoDB'],
+                        demoLink: 'https://demo.example.com',
+                        codeLink: 'https://github.com/yourusername/project-repo',
+                        visible: false
+                        },
+                        // Add more projects here...
+                    ],
+                    projectRefs: [],  // Initialize projectRefs as an empty array
+                    imageScale: 1,
+                    borderRadius: 0,
+                    testimonials: [
+                        {
+                            name: { en: 'John Doe', zh: '约翰·多伊' },
+                            position: { en: 'CEO, Future Tech Innovations', zh: '未来科技创新首席执行官' },
+                            content: {
+                            en: 'Kiwi is an exceptional software architect. Their innovative approach to cloud-native microservices has transformed our product infrastructure.',
+                            zh: 'Kiwi是一位杰出的软件架构师。他们对云原生微服务的创新方法彻底改变了我们的产品基础架构。'
+                            }
+                        },
+                        {
+                            name: { en: 'Jane Smith', zh: '简·史密斯' },
+                            position: { en: 'CTO, Global Systems Corp', zh: '全球系统公司首席技术官' },
+                            content: {
+                            en: 'Working with Kiwi was a game-changer for our team. Their full-stack expertise and optimization skills significantly improved our application performance.',
+                            zh: '与Kiwi合作对我们的团队来说是一个转折点。他们的全栈专业知识和优化技能显著提高了我们的应用程序性能。'
+                            }
+                        }
+                    ],
+                    cards: [
+                    { title: 'Card 1', content: 'Content for card 1', image: './background/yue-ma-7IO4-fLM574-unsplash.jpg' },
+                        { title: 'Card 2', content: 'Content for card 2', image: './background/yue-ma-7IO4-fLM574-unsplash.jpg' },
+                        { title: 'Card 3', content: 'Content for card 3', image: './background/yue-ma-7IO4-fLM574-unsplash.jpg' },
+                        { title: 'Card 4', content: 'Content for card 4', image: './background/yue-ma-7IO4-fLM574-unsplash.jpg' },
+                        { title: 'Card 5', content: 'Content for card 5', image: './background/yue-ma-7IO4-fLM574-unsplash.jpg' },
+                        { title: 'Card 6', content: 'Content for card 6', image: './background/yue-ma-7IO4-fLM574-unsplash.jpg' },
+                        { title: 'Card 7', content: 'Content for card 7', image: './background/yue-ma-7IO4-fLM574-unsplash.jpg' },
+                        { title: 'Card 8', content: 'Content for card 8', image: './background/yue-ma-7IO4-fLM574-unsplash.jpg' },
+                        { title: 'Card 9', content: 'Content for card 9', image: './background/yue-ma-7IO4-fLM574-unsplash.jpg' },
+                        { title: 'Card 10', content: 'Content for card 10', image: './background/yue-ma-7IO4-fLM574-unsplash.jpg' },
+                    ],
+                };
+            },
+            computed: {
+                duplicatedSkills() {
+                    return [...this.skills, ...this.skills, ...this.skills] // Triple the skills for smoother looping
+                }
+            },
+            mounted() {
+                this.applyDarkMode();
+                window.addEventListener('scroll', this.checkScroll);
+                this.setupEventListeners();
+                this.startScroll()
+                window.addEventListener('resize', this.handleResize)
+                this.handleResize() // Initial call to set correct width
+                this.setupIntersectionObserver()
+                this.setupImageAnimation()
+            },
+            beforeUnmount() {
+                window.removeEventListener('resize', this.checkMobile)
+                this.stopScroll()
+            },
+            unmounted() {
+                window.removeEventListener('scroll', this.checkScroll);
+                window.removeEventListener('scroll', this.updateImageAnimation)
+                window.removeEventListener('resize', this.updateImageAnimation)
+            },
+            methods: {
+                scroll(direction) {
+                    const container = this.$refs.scrollContainer;
+                    const scrollAmount = container.clientWidth * 0.8; // Approximate width of one card
+                    if (direction === 'left') {
+                        container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+                    } else {
+                        container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+                    }
+                },
+                handleScroll() {
+                    this.scrollPosition = this.$refs.scrollContainer.scrollLeft;
+                },
+                setupImageAnimation() {
+                    window.addEventListener('scroll', this.updateImageAnimation)
+                    window.addEventListener('resize', this.updateImageAnimation)
+                    this.updateImageAnimation()
+                },
+                updateImageAnimation() {
+                    const animationSection = this.$refs.animationSection;
+                    if (!animationSection) return;
+
+                    const rect = animationSection.getBoundingClientRect();
+                    const sectionHeight = animationSection.offsetHeight - window.innerHeight;
+
+                    // Calculate scroll percentage only when the section is scrolled into view
+                    if (rect.top <= 0 && rect.bottom >= 0) {
+                        let scrollPercentage = Math.min(Math.max(-rect.top / sectionHeight, 0), 1);
+                        scrollPercentage = this.easeInOutCubic(scrollPercentage);
+
+                        this.imageScale = 1 - (scrollPercentage * 0.1); // Scale from 100% to 80%
+                        this.borderRadius = Math.min(scrollPercentage * 50, 50); // 0px to 50px
+                    } else if (rect.top > 0) {
+                        // Reset to the original state when scrolled back to the top
+                        this.imageScale = 1;
+                        this.borderRadius = 0;
+                    }
+                },
+
+                easeInOutCubic(t) {
+                    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+                },
+                setupEventListeners() {
+                    const searchButton = document.querySelector("nav .desktop-nav .link-search");
+                    const closeButton = document.querySelector(".search-container .link-close");
+                    const overlay = document.querySelector(".overlay");
+                    const menuIconContainer = document.querySelector("nav .menu-icon-container");
+                    const searchInput = document.querySelector(".mobile-search-container input");
+                    const cancelBtn = document.querySelector(".mobile-search-container .cancel-btn");
+
+                    if (searchButton) searchButton.addEventListener("click", this.activateSearch);
+                    if (closeButton) closeButton.addEventListener("click", this.deactivateSearch);
+                    if (overlay) overlay.addEventListener("click", this.deactivateSearch);
+                    if (menuIconContainer) menuIconContainer.addEventListener("click", this.toggleMenu);
+                    if (searchInput) searchInput.addEventListener("click", this.activateMobileSearch);
+                    if (cancelBtn) cancelBtn.addEventListener("click", this.deactivateMobileSearch);
+                },
+                toggleMenu() {
+                    this.isMenuOpen = !this.isMenuOpen;
+                    const navContainer = document.querySelector(".nav-container");
+                    if (navContainer) navContainer.classList.toggle("active");
+                },
+                activateSearch() {
+                    const desktopNav = document.querySelector(".desktop-nav");
+                    const searchContainer = document.querySelector(".search-container");
+                    const overlay = document.querySelector(".overlay");
+
+                    if (desktopNav) desktopNav.classList.add("hide");
+                    if (searchContainer) searchContainer.classList.remove("hide");
+                    if (overlay) overlay.classList.add("show");
+                    this.isSearchActive = true;
+                },
+                deactivateSearch() {
+                    const desktopNav = document.querySelector(".desktop-nav");
+                    const searchContainer = document.querySelector(".search-container");
+                    const overlay = document.querySelector(".overlay");
+
+                    if (desktopNav) desktopNav.classList.remove("hide");
+                    if (searchContainer) searchContainer.classList.add("hide");
+                    if (overlay) overlay.classList.remove("show");
+                    this.isSearchActive = false;
+                },
+                activateMobileSearch() {
+                    const searchBar = document.querySelector(".mobile-search-container .search-bar");
+                    const nav = document.querySelector(".nav-container nav");
+                    const desktopNav = document.querySelector(".desktop-nav");
+
+                    if (searchBar) searchBar.classList.add("active");
+                    if (nav) nav.classList.add("move-up");
+                    if (desktopNav) desktopNav.classList.add("move-down");
+                },
+                deactivateMobileSearch() {
+                    const searchBar = document.querySelector(".mobile-search-container .search-bar");
+                    const nav = document.querySelector(".nav-container nav");
+                    const desktopNav = document.querySelector(".desktop-nav");
+
+                    if (searchBar) searchBar.classList.remove("active");
+                    if (nav) nav.classList.remove("move-up");
+                    if (desktopNav) desktopNav.classList.remove("move-down");
+                },
+                toggleDarkMode() {
+                    this.isDarkMode = !this.isDarkMode;
+                    this.applyDarkMode();
+                },
+                applyDarkMode() {
+                    if (this.isDarkMode) {
+                        document.documentElement.classList.add('dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                    }
+                },
+                toggleLanguage() {
+                    this.currentLanguage = this.currentLanguage === 'en' ? 'zh' : 'en';
+                },
+                scrollToTop() {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                },
+                checkScroll() {
+                    this.showBackToTop = window.scrollY > 300;
+                },
+                startScroll() {
+                    this.scrollInterval = setInterval(() => {
+                        this.scrollPosition += 1
+                        if (this.scrollPosition >= this.$refs.carouselRef.scrollWidth / 2) {
+                            this.scrollPosition = 0
+                        }
+                    }, 30)
+                },
+                stopScroll() {
+                    clearInterval(this.scrollInterval)
+                },
+                pauseScroll() {
+                    this.stopScroll()
+                },
+                resumeScroll() {
+                    if (!this.isMobile) {
+                        this.startScroll()
+                    }
+                },
+                handleResize() {
+                    // Ensure the scrollPosition is valid after resize
+                    const maxScroll = this.$refs.carouselRef.scrollWidth / 3
+                    if (this.scrollPosition > maxScroll) {
+                        this.scrollPosition = 0
+                    }
+                },
+                setupIntersectionObserver() {
+                    const options = {
+                        root: null,
+                        rootMargin: '0px',
+                        threshold: 0.1
+                    };
+
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            const index = this.projectRefs.findIndex(ref => ref === entry.target);
+                            if (index !== -1) {
+                            this.projects[index].visible = true;
+                            }
+                            observer.unobserve(entry.target);
+                        }
+                        });
+                    }, options);
+
+                    this.$nextTick(() => {
+                        this.projectRefs.forEach(ref => {
+                        if (ref) observer.observe(ref);
+                        });
+                    });
+                },
+            },
+        });app.mount('#app');
+        });
+    </script>
+</body>
+
+</html>
