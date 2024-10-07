@@ -8,6 +8,13 @@ Below are previews of the homepage files. You can find the corresponding code in
 ### Software Engineer HomePage 1
 ![overview_en](./Assets/SWE_Homepage_1.png)
 ![overview_cn](./Assets/SWE_Homepage_2.png)
+![overview_dark](./Assets/SWE_Homepage_4.png)
+![sections](./Assets/SWE_Homepage_3.png)
+![sections](./Assets/SWE_Homepage_5.png)
+![sections](./Assets/SWE_Homepage_6.png)
+![sections](./Assets/SWE_Homepage_7.png)
+![sections](./Assets/SWE_Homepage_8.png)
+![sections](./Assets/SWE_Homepage_9.png)
 
 ### Minimalist HomePage 1
 ![overview](./Assets/minimalist_homepage_1_1.png)
