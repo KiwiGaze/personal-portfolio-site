@@ -5,6 +5,10 @@ Welcome to the **Personal Website Portfolios** repository! This repository conta
 ## Websites
 Below are previews of the homepage files. You can find the corresponding code in the `./websites/` folder.
 
+### Software Engineer HomePage 1
+![overview_en](./Assets/SWE_Homepage_1.png)
+![overview_cn](./Assets/SWE_Homepage_2.png)
+
 ### Minimalist HomePage 1
 ![overview](./Assets/minimalist_homepage_1_1.png)
 ![sectons](./Assets/minimalist_homepage_1_2.png)
